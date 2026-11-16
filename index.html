@@ -14,7 +14,7 @@
 </main><script>
 const KEY='jkh-personal-v1';
 const items=[{id:'hot',name:'ГВС',desc:'Горячая вода',unit:'м³',short:'Г'},{id:'cold',name:'ХВС',desc:'Холодная вода',unit:'м³',short:'Х'},{id:'t1',name:'Т1',desc:'Пик',unit:'кВт·ч',short:'Т1'},{id:'t2',name:'Т2',desc:'Ночь',unit:'кВт·ч',short:'Т2'},{id:'t3',name:'Т3',desc:'Полупик',unit:'кВт·ч',short:'Т3'}];
-const defaults={version:1,month:'2026-11',prev:{hot:'47',cold:'94',t1:'2543',t2:'971',t3:'1461'},current:{hot:'51',cold:'101',t1:'2584',t2:'1029',t3:'1500'},rates:{hot:'377.80',cold:'73.79',t1:'12.39',t2:'4.85',t3:'8.90',drain:'60.24'},drain:false,whole:true,history:[]};
+const defaults={version:1,month:'2026-11',prev:{hot:'47',cold:'94',t1:'2543',t2:'971',t3:'1461'},current:{hot:'51',cold:'101',t1:'2584',t2:'1029',t3:'1500'},rates:{hot:'377.80',cold:'73.79',t1:'12.39',t2:'4.85',t3:'8.90',drain:'60.24'},drain:false,whole:false,history:[]};
 const $=id=>document.getElementById(id);let state=structuredClone(defaults),storageOk=true;
 const shape=o=>!!o&&items.every(i=>typeof o[i.id]==='string');const rateShape=o=>shape(o)&&typeof o.drain==='string';const snapshotShape=o=>shape(o.prev)&&shape(o.current)&&rateShape(o.rates)&&typeof o.drain==='boolean'&&typeof o.whole==='boolean';function valid(s){return !!s&&s.version===1&&typeof s.month==='string'&&/^\d{4}-\d{2}$/.test(s.month)&&Array.isArray(s.history)&&shape(s.prev)&&shape(s.current)&&rateShape(s.rates)&&typeof s.drain==='boolean'&&typeof s.whole==='boolean'&&s.history.every(h=>h&&typeof h.month==='string'&&/^\d{4}-\d{2}$/.test(h.month)&&typeof h.report==='string'&&typeof h.total==='number'&&snapshotShape(h));}
 try{const raw=localStorage.getItem(KEY);if(raw){const parsed=JSON.parse(raw);if(valid(parsed))state=parsed;}}catch{storageOk=false;}
